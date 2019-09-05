@@ -5,42 +5,53 @@ Vue.use(Vuex)
 
 export default {
   state: {
-
+    todoList: [],
   },
   mutations: {
-
+    initTodos(state, todos) {
+      state.todoList = todos;
+    },
   },
-  actions: {
-    fetchTodos(context) {
-      const url = "http://5b4dcb2aec112500143a2311.mockapi.io/api/todos";
-      context.commit('startLoadding');
-      axios.get(url).then(function (reponse) {
-        context.commit('completeLoadding');
-        context.commit('initTodos', reponse.data);
-      }).catch(function (error) {
-        alert(error.reponse)
-      })
+    getters: {
+      filteredTodoList: function (state) {
+        let filteredTodoList = [];
+        for (let i = 0; i < state.todoList.length; i++) {
+          if (state.currentFilter === 'all' || state.currentFilter === state.todoList[i].status) {
+            filteredTodoList.push(state.todoList[i])
+          }
+        }
+        return filteredTodoList;
+      }
     },
-    createTodos(context, content) {
-      console.log(content)
-      const url = "http://192.168.8.107:8099/packages";
-      axios.post(url, content).then(function (reponse) {
-        context.dispatch('fetchTodos');
-      }).catch(function (error) {
-        alert(error)
-      })
-    },
-    updateTodos(context, index) {
-      const url = "http://5b4dcb2aec112500143a2311.mockapi.io/api/todos/" + index;
-      axios.put(url, {
-        "id": "",
-        "content": "默认修改值",
-        "status": "active"
-      }).then(function (reponse) {
-        context.dispatch('fetchTodos');
-      }).catch(function (error) {
-        alert(error)
-      })
+    actions: {
+      fetchTodos(context) {
+        const url = "http://localhost:8099/packages";
+        axios.get(url).then(function (reponse) {
+          context.commit('initTodos', reponse.data);
+        }).catch(function (error) {
+          alert(error.reponse)
+        })
+      },
+      createTodos(context, content) {
+        console.log(content)
+        const url = "http://localhost:8099/packages";
+        axios.post(url, content).then(function (reponse) {
+          context.dispatch('fetchTodos');
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      updateTodos(context, index) {
+        const url = "http://5b4dcb2aec112500143a2311.mockapi.io/api/todos/" + index;
+        axios.put(url, {
+          "id": "",
+          "content": "默认修改值",
+          "status": "active"
+        }).then(function (reponse) {
+          context.dispatch('fetchTodos');
+        }).catch(function (error) {
+          alert(error)
+        })
+      }
     }
   }
-}

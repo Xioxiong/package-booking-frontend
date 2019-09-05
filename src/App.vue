@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/addform">AddForm</router-link>
+      <router-link to="/addform">包裹入库</router-link> |
+      <router-link to="/packageList">待收包裹</router-link>
     </div>
     <router-view/>
   </div>
