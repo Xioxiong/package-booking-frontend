@@ -37,6 +37,7 @@ export default {
         const url = "http://localhost:8099/packages";
         axios.post(url, content).then(function (reponse) {
           context.dispatch('fetchTodos');
+          alert("包裹入库成功！")
         }).catch(function (error) {
           alert(error)
         })
